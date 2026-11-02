@@ -5,7 +5,7 @@ class BukuView(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Sistem Manajemen Perpustakaan")
-        self.geometry("800x450")
+        self.geometry("800x520")
         # Konfigurasi Grid Utama (1 Baris, 2 Kolom)
         self.grid_columnconfigure(0, weight=1) # Kolom Kiri (Form)
         self.grid_columnconfigure(1, weight=2) # Kolom Kanan (Tabel lebih lebar)
@@ -28,7 +28,7 @@ class BukuView(ctk.CTk):
         
         # Tombol Aksi
         self.btn_simpan = ctk.CTkButton(self.frame_kiri, text="Simpan Data", fg_color="green")
-        self.btn_simpan.pack(pady=20, padx=15, fill="x")
+        self.btn_simpan.pack(pady=(15, 10), padx=15, fill="x")
 
         # Tombol Update
         self.btn_update = ctk.CTkButton(self.frame_kiri, text="Perbarui Data (Update)", fg_color="blue")
@@ -37,6 +37,10 @@ class BukuView(ctk.CTk):
         # Tombol Delete
         self.btn_delete = ctk.CTkButton(self.frame_kiri, text="Hapus Data (Delete)", fg_color="red")
         self.btn_delete.pack(pady=10, padx=15, fill="x")    
+
+        # Tombol Logout
+        self.btn_logout = ctk.CTkButton(self.frame_kiri, text="Logout", fg_color="gray", hover_color="#555555", command=self.logout)
+        self.btn_logout.pack(pady=10, padx=15, fill="x")
         
         # FRAME KANAN: TABEL DAFTAR BUKU
         self.frame_kanan = ctk.CTkFrame(self)
@@ -61,7 +65,24 @@ class BukuView(ctk.CTk):
         
         self.tabel.pack(fill="both", expand=True, padx=15, pady=10)
 
+    def logout(self):
+        # Menutup jendela perpustakaan dan mengembalikan ke jendela LoginView
+        self.destroy()
+        try:
+            from controllers.auth_controller import AuthController
+            app = AuthController()
+            app.run()
+        except Exception:
+            from views.login_view import LoginView
+            app = LoginView()
+            app.mainloop()
+
 # Blok eksekusi untuk menguji tampilan grafis
 if __name__ == "__main__":
-    app = BukuView()
-    app.mainloop()
+    try:
+        from controllers.buku_controller import BukuController
+        app = BukuController()
+        app.run()
+    except Exception:
+        app = BukuView()
+        app.mainloop()
