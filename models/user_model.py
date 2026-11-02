@@ -13,6 +13,10 @@ class UserModel:
         return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     def autentikasi(self, username, password):
+        # Coba hubungkan kembali jika koneksi belum ada atau terputus
+        if not self.conn or not self.conn.is_connected():
+            self.conn = self.db.get_connection()
+
         if self.conn:
             cursor = self.conn.cursor(dictionary=True)
             password_hash = self.hash_password(password)
@@ -27,6 +31,10 @@ class UserModel:
         return None
 
     def register_user(self, username, password, role="anggota"):
+        # Coba hubungkan kembali jika koneksi belum ada atau terputus
+        if not self.conn or not self.conn.is_connected():
+            self.conn = self.db.get_connection()
+
         if self.conn:
             try:
                 cursor = self.conn.cursor()

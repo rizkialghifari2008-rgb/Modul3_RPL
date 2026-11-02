@@ -39,16 +39,16 @@ class BukuModel:
         return False
 
     def delete_buku(self, id_buku):
-     if self.conn:
-        try:
-            cursor = self.conn.cursor()
-            query = f"DELETE FROM {self.table_name} WHERE id_buku = %s"
-            val = (id_buku,)
-            cursor.execute(query, val)
-            self.conn.commit()
-            cursor.close()
-            return True
-        except Exception as e:
-            print(f"Gagal menghapus buku: {e}")
+        if self.conn:
+            try:
+                cursor = self.conn.cursor()
+                query = f"DELETE FROM {self.table_name} WHERE id_buku = %s"
+                val = (id_buku,)
+                cursor.execute(query, val)
+                self.conn.commit()
+                cursor.close()
+                return True
+            except Exception as e:
+                print(f"Gagal menghapus buku: {e}")
+            return False
         return False
-        return false 
